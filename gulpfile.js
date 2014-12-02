@@ -55,12 +55,12 @@ var filefolder = {
     'sass': 'sass/**/*.{sass, scss}',
     'test': {
         'html': {
-            'html': 'test/html/*.html',
-            'script': 'test/html/script/*.js'
+            'html': 'test-html/*.html',
+            'script': 'test-html/script/*.js'
         },
         'js': {
-            'html': 'test/js/*.html',
-            'script': 'test/js/script/**/*.js'
+            'html': 'test-js/**/*.html',
+            'script': 'test-js/**/*.js'
         }
     }
 };
@@ -462,6 +462,28 @@ gulp.task('test-js', function() {
         .pipe(reload({
             stream: true
         }));
+
+
+});
+
+// 哪些檔案有更新就要reload畫面
+gulp.task('test-watch-reload', function() {
+
+
+    var watchAry = [
+        filefolder.test.html.html,
+        filefolder.test.html.script,
+        filefolder.test.js.html,
+        filefolder.test.js.script
+    ];
+
+    // 將測試js綁定watch   
+    gulp.src(watchAry)
+        .pipe(watch(watchAry))
+        .pipe(filter(watchStatus.isNotDeleted))
+        .pipe(reload({
+            stream: true
+        }));
 });
 
 
@@ -486,7 +508,7 @@ gulp.task('server', ['sass', 'development']);
 gulp.task('live', ['browser-sync', 'server']);
 
 // 測試
-gulp.task('test', ['live', 'test-html-watch', 'test-js-watch']);
+gulp.task('test', ['live', 'test-html-watch', 'test-js-watch', 'test-watch-reload']);
 
 
 // 發佈用
