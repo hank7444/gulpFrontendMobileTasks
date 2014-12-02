@@ -42,15 +42,12 @@
         <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
         -->
 
-        <!-- htmlbuild:css -->
         <!-- 共用的css請放這，在dist時會將htmlbuild內改為global.css -->
         <link rel="stylesheet" href="css/global/normalize.css">
         <link rel="stylesheet" href="css/global/aaa1234.css">
-        <!-- endbuild -->
 
 
-        <!-- htmlbuild:csstest -->
-        <!-- endbuild -->
+<link rel="stylesheet" href="../../js/test/mocha.css">
 
 
         <!-- 非共用的請放這-->
@@ -60,8 +57,7 @@
     <body>
     
     
-    <!-- htmlbuild:htmltest -->
-    <!-- endbuild -->
+<div id="mocha"></div>
 
 
 
@@ -72,22 +68,23 @@
 
 
 
-    <!-- htmlbuild:js -->
     <!-- inject:js -->
 
     <script src="../js/config/environment.js"></script>
     <script src="../js/config/environments/development.js"></script>
 
     <!-- endinject -->
-    <!-- endbuild -->
     
     <script src="../js/vendor/modernizr-2.7.1.min.js"></script>
     <script src="../js/vendor/jquery-2.1.0.min.js" type="text/javascript"></script>
     <script src="../js/main.js" type="text/javascript"></script>
 
 
-    <!-- htmlbuild:jstest -->
-    <!-- endbuild -->
+<script src="../../js/test/jquery-1.10.2.min.js"></script>
+<script src="../../js/test/mocha.js"></script>
+<script src="../../js/test/chai.js"></script>
+<script src="../../js/test/chai-jquery.js"></script>
+<script src="./script/test.js"></script>
 
     </body>
 </html>

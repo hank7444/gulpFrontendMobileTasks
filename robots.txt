@@ -1,3 +1,6 @@
-# robotstxt.org/
+# 寫法請參考google webmaster說明
+# 網址: https://support.google.com/webmasters/answer/6062596?hl=zh-Hant
 
+
+# robotstxt.org/
 User-agent: *
