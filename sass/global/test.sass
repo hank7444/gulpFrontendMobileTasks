@@ -1,6 +1,19 @@
+@import compass
+@import "./retina/retina-sprites"
+@import "./retina/retina-background-image"
+
 div
 	color: #aaa
 	position: absolute
 	top: 10px
+
+
+.background2
+	width: 100%
+	height: 200px
+	@include background-retina("background.gif", "background-2x.gif")
+	margin: 10px 0px
+	clear: both
+
 
 @import part

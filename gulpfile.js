@@ -278,13 +278,13 @@ gulp.task('clean-all', ['clean', 'clean-img']);
 // 測試用libs
 var getTestLibAry = {
     'js': [
-        '../../js/test/jquery-1.10.2.min.js',
-        '../../js/test/mocha.js',
-        '../../js/test/chai.js',
-        '../../js/test/chai-jquery.js',
+        '../js/vendor/jquery-2.1.1.min.js',
+        '../js/test/mocha.js',
+        '../js/test/chai.js',
+        '../js/test/chai-jquery.js',
     ],
     'css': [
-        '../../js/test/mocha.css'
+        '../js/test/mocha.css'
     ]
 };
 
@@ -314,11 +314,11 @@ var getJsFolderName = function(filepath) {
 // 建立測試用的code
 var destTestJs = function(name, foldername, testType) {
 
-    var dir = './' + testType + '/script/';
+    var dir = './script/';
     var filepath = '';
 
     if (foldername) {
-        dir = './' + testType + '/' + foldername + '/script/';
+        dir = './' + foldername + '/script/';
     }
     filepath = dir + name + '.js';
 
@@ -327,14 +327,14 @@ var destTestJs = function(name, foldername, testType) {
         if (exists) {
             return false;
         }
-        gulp.src('./test/default.js')
+        gulp.src('./test-' + testType + '/default.js')
             .pipe(rename(function(path) {
                 path.dirname = dir;
                 path.basename = name;
                 path.extname = ".js";
 
             }))
-            .pipe(gulp.dest("./test"))
+            .pipe(gulp.dest("./test-" + testType))
             .pipe(reload({
                 stream: true
             }));
@@ -372,7 +372,7 @@ var createTestHtmlHash = {
                     })).pipe(block);
                 },
             }))
-            .pipe(gulp.dest('./test/' + testType))
+            .pipe(gulp.dest('./test-' + testType))
             .pipe(reload({
                 stream: true
             }));
@@ -380,10 +380,10 @@ var createTestHtmlHash = {
     'js': function(name, filepath, foldername, testType) {
 
         // 產生測試用的html
-        var htmlPath = 'test/' + testType + '/' + foldername + '/' + name + '.html';
-        gulp.src('./test/default.html')
+        var htmlPath = 'test-' + testType + '/' + foldername + '/' + name + '.html';
+        gulp.src('./test-js/default.html')
             .pipe(rename(function(path) {
-                path.dirname = testType + '/' + foldername;
+                path.dirname = foldername;
                 path.basename = name;
                 path.extname = ".html";
             }))
@@ -392,12 +392,12 @@ var createTestHtmlHash = {
 
                     var jsLibAry = getTestLibAry.js.slice(0);
 
-                    jsLibAry = jsLibAry.map(function(value) {
+                    jsLibAry = jsLibAry.map(function(value) { 
                         return '../' + value;
                     });
 
                     if (name) {
-                        jsLibAry.push('../../../' + testType + '/' + foldername + '/' + name + '.js');
+                        jsLibAry.push('../../js/' + foldername + '/' + name + '.js');
                         jsLibAry.push('./script/' + name + '.js');
                     }
                     es.readArray(jsLibAry.map(function(str) {
@@ -405,7 +405,7 @@ var createTestHtmlHash = {
                     })).pipe(block);
                 },
             }))
-            .pipe(gulp.dest("./test"))
+            .pipe(gulp.dest("./test-" + testType))
             .pipe(reload({
                 stream: true
             }));
@@ -485,6 +485,10 @@ gulp.task('server', ['sass', 'development']);
 // 開發用-及時預覽
 gulp.task('live', ['browser-sync', 'server']);
 
+// 測試
+gulp.task('test', ['live', 'test-html-watch', 'test-js-watch']);
+
+
 // 發佈用
 gulp.task('dist', function(cb) {
     runSequence('clean', ['concat-css', 'minify-css', 'minify-js', 'move-js', 'production']);
@@ -494,4 +498,3 @@ gulp.task('dist', function(cb) {
 gulp.task('dist-img', function(cb) {
     runSequence('clean-all', ['dist', 'minify-img']);
 });
-
