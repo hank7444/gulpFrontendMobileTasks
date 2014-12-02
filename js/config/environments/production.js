@@ -1,0 +1,1 @@
+window.ENV.aaa = 123;
