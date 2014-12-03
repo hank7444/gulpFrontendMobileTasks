@@ -6,7 +6,7 @@
         "gulp": "./bin/gulp.js"
     },
     "dependencies": {
-        "gulp": "3.8.9",
+        "gulp": "3.8.10",
         "gulp-util": "3.0.1",
         "gulp-watch": "2.0.0",
         "gulp-filter": "1.0.2",
@@ -23,6 +23,7 @@
         "gulp-dom-src": "0.1.1",
         "gulp-cheerio": "0.3.2",
         "gulp-clean": "0.3.1",
+        "gulp-inject": "1.0.2",
         "gulp-htmlbuild": "0.3.0",
         "run-sequence": "1.0.1",
         "event-stream": "3.1.7",
