@@ -314,13 +314,13 @@ var getJsFolderName = function(filepath) {
 // 建立測試用的code
 var destTestJs = function(name, foldername, testType) {
 
-    var dir = './script/';
+    var dir = '/script/';
     var filepath = '';
 
     if (foldername) {
-        dir = './' + foldername + '/script/';
+        dir = foldername + '/script/';
     }
-    filepath = dir + name + '.js';
+    filepath = "./test-" + testType + '/' + dir + name + '.js';
 
     fs.exists(filepath, function(exists) {
 
@@ -376,40 +376,47 @@ var createTestHtmlHash = {
             .pipe(reload({
                 stream: true
             }));
+        
     },
     'js': function(name, filepath, foldername, testType) {
 
-        // 產生測試用的html
-        var htmlPath = 'test-' + testType + '/' + foldername + '/' + name + '.html';
-        gulp.src('./test-js/default.html')
-            .pipe(rename(function(path) {
-                path.dirname = foldername;
-                path.basename = name;
-                path.extname = ".html";
-            }))
-            .pipe(htmlbuild({
-                js: function(block) {
+        // 產生測試用的html, 如果已存在則不覆蓋, 避免寫的測試用html被蓋掉
+        var htmlPath = './test-' + testType + '/' + foldername + '/' + name + '.html';
 
-                    var jsLibAry = getTestLibAry.js.slice(0);
+        fs.exists(htmlPath, function(exists) {
 
-                    jsLibAry = jsLibAry.map(function(value) { 
-                        return '../' + value;
-                    });
+            if (exists) {
+                return false;
+            }
+            gulp.src('./test-js/default.html')
+                .pipe(rename(function(path) {
+                    path.dirname = foldername;
+                    path.basename = name;
+                    path.extname = ".html";
+                }))
+                .pipe(htmlbuild({
+                    js: function(block) {
 
-                    if (name) {
-                        jsLibAry.push('../../js/' + foldername + '/' + name + '.js');
-                        jsLibAry.push('./script/' + name + '.js');
-                    }
-                    es.readArray(jsLibAry.map(function(str) {
-                        return '<script src="' + str + '"></script>';
-                    })).pipe(block);
-                },
-            }))
-            .pipe(gulp.dest("./test-" + testType))
-            .pipe(reload({
-                stream: true
-            }));
-     
+                        var jsLibAry = getTestLibAry.js.slice(0);
+
+                        jsLibAry = jsLibAry.map(function(value) { 
+                            return '../' + value;
+                        });
+
+                        if (name) {
+                            jsLibAry.push('../../js/' + foldername + '/' + name + '.js');
+                            jsLibAry.push('./script/' + name + '.js');
+                        }
+                        es.readArray(jsLibAry.map(function(str) {
+                            return '<script src="' + str + '"></script>';
+                        })).pipe(block);
+                    },
+                }))
+                .pipe(gulp.dest("./test-" + testType))
+                .pipe(reload({
+                    stream: true
+                }));
+        });
     }
 };
 
@@ -445,8 +452,8 @@ gulp.task('test-js', function() {
     var testType = 'js';
 
     // 監聽js/script檔案, 產生對應的測試用html
-    // html會自動加上測試用的lib與測試用的js
-    // html如果已存在則不覆蓋(避免使用者新增的部分被覆蓋掉)
+    // 測試用的html會自動加上測試用的lib與測試用的js
+    // 測試用的html與js如果已存在則不覆蓋(避免使用者新增的部分被覆蓋掉)
     gulp.src(jsTestFolderAry)
         .pipe(watch(jsTestFolderAry, function(files) {
 
