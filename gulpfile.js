@@ -300,11 +300,16 @@ gulp.task('clean-all', ['clean', 'clean-img']);
 // ********** 測試用 ***********
 // 測試用libs
 var getTestLibAry = {
+
+    'env': [
+        '../js/config/environment.js',
+        '../js/config/environments/development.js'
+    ],
     'js': [
         '../js/vendor/jquery-2.1.1.min.js',
         '../js/test/mocha.js',
         '../js/test/chai.js',
-        '../js/test/chai-jquery.js',
+        '../js/test/chai-jquery.js'
     ],
     'css': [
         '../js/test/mocha.css'
@@ -420,7 +425,8 @@ var createTestHtmlHash = {
                 .pipe(htmlbuild({
                     js: function(block) {
 
-                        var jsLibAry = getTestLibAry.js.slice(0);
+
+                        var jsLibAry = getTestLibAry.env.slice(0).concat(getTestLibAry.js.slice(0));
 
                         jsLibAry = jsLibAry.map(function(value) {
                             return '../' + value;
