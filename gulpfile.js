@@ -35,6 +35,10 @@ var fs = require('fs');
 var tap = require('gulp-tap'); // 取得檔案名稱
 var rename = require("gulp-rename");
 
+// strip code
+var stripCode = require('gulp-strip-code');
+var stripDebug = require('gulp-strip-debug');
+
 // 用絕對路徑會導致gulp-watch對新增檔案的監聽會失效..@@
 var filefolder = {
     'base': '/',
@@ -143,7 +147,9 @@ gulp.task('development', function() {
     var sources = gulp.src([
         'js/config/environment.js',
         'js/config/environments/development.js'
-    ], {read: false});
+    ], {
+        read: false
+    });
 
     gulp.src(filefolder.html)
         .pipe(watch(filefolder.html))
@@ -167,11 +173,13 @@ gulp.task('production', function() {
     ];
     var htmlbuildAry = [
         '../js/config/environment.js',
-        '../js/config/production.js'    
+        '../js/config/production.js'
     ];
 
     // 碰到牆壁, read: false會導致在dest的時候檔案不會複製過去喔!
-    gulp.src(sourceAry, {read: true})
+    gulp.src(sourceAry, {
+        read: true
+    })
         .pipe(gulp.dest('./dist/js/config'));
 
     gulp.src(filefolder.html)
@@ -181,7 +189,7 @@ gulp.task('production', function() {
                     return '<script src="' + str + '" type="text/javascript"></script>';
                 })).pipe(block);
             },
-            css: htmlbuild.preprocess.css(function (block) {
+            css: htmlbuild.preprocess.css(function(block) {
                 block.write('../css/global.css');
                 block.end();
             })
@@ -197,19 +205,34 @@ gulp.task('production', function() {
 gulp.task('minify-js', function() {
 
     gulp.src(filefolder.js.vendor + '.js')
-            .pipe(uglify())
-            .pipe(gulp.dest('./dist/js/vendor'))
-            .pipe(filesize())
-            .on('error', gutil.log);
+        .pipe(uglify())
+        .pipe(gulp.dest('./dist/js/vendor'))
+        .pipe(filesize())
+        .on('error', gutil.log);
 });
 
 gulp.task('move-js', function() {
 
-    gulp.src(filefolder.js.lib)
-        .pipe(gulp.dest('./dist/js/lib'));
-
     gulp.src(filefolder.js.script)
-        .pipe(gulp.dest('./dist/js/script'));
+        .pipe(stripCode({
+            start_comment: 'test-code',
+            end_comment: 'end-test-code'
+        }))
+        .pipe(stripDebug())
+        .pipe(gulp.dest('./dist/js/script'))
+        .pipe(filesize())
+        .on('error', gutil.log);
+
+
+    gulp.src(filefolder.js.lib)
+        .pipe(stripCode({
+            start_comment: 'test-code',
+            end_comment: 'end-test-code'
+        }))
+        .pipe(stripDebug())
+        .pipe(gulp.dest('./dist/js/lib'))
+        .pipe(filesize())
+        .on('error', gutil.log);
 });
 
 
@@ -376,7 +399,7 @@ var createTestHtmlHash = {
             .pipe(reload({
                 stream: true
             }));
-        
+
     },
     'js': function(name, filepath, foldername, testType) {
 
@@ -399,7 +422,7 @@ var createTestHtmlHash = {
 
                         var jsLibAry = getTestLibAry.js.slice(0);
 
-                        jsLibAry = jsLibAry.map(function(value) { 
+                        jsLibAry = jsLibAry.map(function(value) {
                             return '../' + value;
                         });
 
@@ -458,7 +481,7 @@ gulp.task('test-js', function() {
         .pipe(watch(jsTestFolderAry, function(files) {
 
             files.pipe(tap(function(file, t) {
-              
+
                 var name = getPathName(file.path);
                 var folder = getJsFolderName(file.path);
                 destTestJs(name, folder, testType);
@@ -502,7 +525,7 @@ gulp.task('test-html-watch', function() {
 });
 
 gulp.task('test-js-watch', function() {
-     gulp.watch(jsTestFolderAry, ['test-js']);
+    gulp.watch(jsTestFolderAry, ['test-js']);
 });
 
 
