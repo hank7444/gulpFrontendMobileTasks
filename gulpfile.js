@@ -45,9 +45,9 @@ var filefolder = {
     'img': 'img/**/*',
     'js': {
         'all': 'js/**/*.js',
-        'lib': 'js/lib/**/*',
-        'script': 'js/script/**/*',
-        'vendor': 'js/vendor/**/*'
+        'lib': 'js/lib/**/*.js',
+        'script': 'js/script/**/*.js',
+        'vendor': 'js/vendor/**/*.js'
     },
     'html': 'html/**/*.html',
     'htmldist': 'dist/html/**/*.html',
@@ -483,8 +483,11 @@ gulp.task('test-js', function() {
     // 監聽js/script檔案, 產生對應的測試用html
     // 測試用的html會自動加上測試用的lib與測試用的js
     // 測試用的html與js如果已存在則不覆蓋(避免使用者新增的部分被覆蓋掉)
+    // 如果資料夾裡面都沒有任何js檔案, watch會失效
     gulp.src(jsTestFolderAry)
         .pipe(watch(jsTestFolderAry, function(files) {
+
+            console.log(1234);
 
             files.pipe(tap(function(file, t) {
 
@@ -498,8 +501,6 @@ gulp.task('test-js', function() {
         .pipe(reload({
             stream: true
         }));
-
-
 });
 
 // 哪些檔案有更新就要reload畫面
