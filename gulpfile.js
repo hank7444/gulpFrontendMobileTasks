@@ -95,7 +95,9 @@ gulp.task('browser-sync', function() {
         filefolder.js.all,
         filefolder.img,
         filefolder.test.html.html,
-        filefolder.test.html.script
+        filefolder.test.html.script,
+        filefolder.test.js.html,
+        filefolder.test.js.js
     ];
 
     gulp.src(syncAry)

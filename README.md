@@ -1,12 +1,23 @@
 gulpFrontendMobileTasks
 ===================
 
+## Updates
+# 
+** 2014.11.12 **
+
+- 改變sass資料夾結構與預設檔案
+- 修正retina-sprites.scss use-sprite()效能
+- gulpfile.js  task "browser-sync" 新增監聽/test-js/**/*.html與/test-js/**/*.js
+
+
+---
 ## 特色:
 1. 整合mobile boilerplate
 2. 整合sass
 3. 可簡單的處理一倍兩倍圖的問題
 4. 分開發與產品環境
 5. 自動建立測試環境
+---
 
 ## 執行模式: 
 
@@ -16,7 +27,7 @@ gulpFrontendMobileTasks
 * `dist`: 壓縮js/vendor，壓縮css/與合併css/global/裡所有css檔案成global.css
 * `dist-img`: 結合`dist`與壓縮圖片, 通常用於第一次壓縮圖片(如果有新圖片, 就要重新執行以便重新壓縮圖片)
 
-
+---
 ##資料夾結構
 ### 注意: 有*符號的項目請勿任意刪除
 + css/
@@ -40,7 +51,7 @@ gulpFrontendMobileTasks
     + touch/ (`shortcut icon, apple-touch-icon等放置位置`)
 + sass/
 	+ global/ (`產生後的css會放到css/global`)
-	+ retina/ (`設定與產生一倍圖兩倍圖的sass模組`)
+	+ function/ (`共用的mixin, extend, variable等放在這`)
 + test-html/ (`html/產生的測試環境`)
 	+ default.html (`測試用html樣板`)
  	+ default.js (`測試用js樣板`)
@@ -51,7 +62,7 @@ gulpFrontendMobileTasks
 + gulpfile.js (`gulp腳本`)
 + humans.txt (`網站說明`)
 + robots.txt (`告知檢索器哪些網頁可以存取, 哪些不可存取`)
-
+---
 ##測試環境結構
 
 ###html整合測試
@@ -88,7 +99,7 @@ gulp會在test-js/產生以下檔案並在每次儲存會有以下機制:
 
 
 
-
+---
 ##Usage
 
 ### step1: download node modules
@@ -108,9 +119,11 @@ gulp {command}, ex: gulp server, gulp dist
 預設的網址為: localhost:3000, <br>
 瀏覽器會自動重新整理瀏覽器中，網址為:localhost:3000/html.*.html的頁面
 
+---
  
 ##License
 Licensed under the MIT License
  
+ ---
 ##Authors
 Copyright(c) 2014 Hank Kuo <<hank7444@gmail.com>>
