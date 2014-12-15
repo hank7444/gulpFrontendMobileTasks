@@ -12,23 +12,24 @@
  */
 
 //first we'll define the folders where the sprites are and their layouts
-@import "icons/*.png";
-@import "icons-2x/*.png";
+$icons: sprite-map("icons/*.png", $layout: smart);
+$icons-2x: sprite-map("icons-2x/*.png", $layout: smart);
 
 //Sprite mixin, works perfectly with standard defines
 @mixin use-sprite($sprite) {
-    @include icons-sprite($sprite); 
+    background-image: sprite-url($icons);
+    background-position: sprite-position($icons, $sprite);
     background-repeat: no-repeat;
     overflow: hidden;
-    display: inline-block;
-    height: icons-sprite-height($sprite);
-    width: icons-sprite-width($sprite);
+    display: block;
+    height: image-height(sprite-file($icons, $sprite));
+    width: image-width(sprite-file($icons, $sprite));
 
     @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
-        background-repeat: no-repeat;
-        overflow: hidden;
-        display: inline-block;
-        height: icons-2x-sprite-height($sprite);
-        width: icons-2x-sprite-width($sprite);
+        background-image: sprite-url($icons-2x);
+        background-size: (image-width(sprite-path($icons-2x)) / 2) (image-height(sprite-path($icons-2x)) / 2);
+        background-position: round(nth(sprite-position($icons-2x, $sprite), 1) / 2) round(nth(sprite-position($icons-2x, $sprite), 2) / 2);
+        height: image-height(sprite-file($icons-2x, $sprite)) / 2;
+        width: image-width(sprite-file($icons-2x, $sprite)) / 2;
     }
 }
