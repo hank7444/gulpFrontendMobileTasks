@@ -3,11 +3,12 @@ gulpFrontendMobileTasks
 
 ## Updates
 # 
-** 2014.11.12 **
+** 2014.11.22 **
 
 - 改變sass資料夾結構與預設檔案
-- 修正retina-sprites.scss use-sprite()效能
-- gulpfile.js  task "browser-sync" 新增監聽/test-js/**/*.html與/test-js/**/*.js
+- 將task compass移出主要task, 因為gulp-compass每次儲存都會跑資料夾下的sass檔案, 會有效能問題
+- config.rb加入參數relative_assets = true, 避免在子資料夾的sass產生css時路徑錯誤
+- task development對html/下的html插入環境變數改為只會執行一次, 不再監聽檔案變動
 
 
 ---
@@ -21,8 +22,9 @@ gulpFrontendMobileTasks
 
 ## 執行模式: 
 
-* `server`: 監聽sass/, 並在每次儲存自動轉成css檔案
-* `live`: 同server, 但多了browser-sync模組, 在每次儲存sass時, 會自動重新整理瀏覽器中，網址為:localhost:3000/html.*.html的頁面
+* `server`: 將環境變數的js位置插入到html/*.html中
+* `live`: 同server, 但多了browser-sync模組, 在每次儲存檔案時, 會自動重新整理瀏覽器，網址為:localhost:3000/html.*.html的頁面
+* `demo`: 只有browser-sync
 * `test`: 同live, 但在每次儲存html/與js/檔案時,會在test-html與test-js產生相對應的測試環境
 * `dist`: 壓縮js/vendor，壓縮css/與合併css/global/裡所有css檔案成global.css
 * `dist-img`: 結合`dist`與壓縮圖片, 通常用於第一次壓縮圖片(如果有新圖片, 就要重新執行以便重新壓縮圖片)

@@ -90,14 +90,9 @@ var watchStatus = {
 gulp.task('browser-sync', function() {
 
     var syncAry = [
-        filefolder.html,
-        filefolder.css.all,
         filefolder.js.all,
         filefolder.img,
-        filefolder.test.html.html,
-        filefolder.test.html.script,
-        filefolder.test.js.html,
-        filefolder.test.js.js
+        filefolder.css.all
     ];
 
     gulp.src(syncAry)
@@ -123,6 +118,7 @@ gulp.task('browser-sync', function() {
 
 
 // ************* sass **************
+/*
 gulp.task('compass', function() {
     gulp.src(filefolder.sass)
         .pipe(plumber())
@@ -140,7 +136,7 @@ gulp.task('compass', function() {
 gulp.task('sass', function() {
     gulp.watch([filefolder.sass], ['compass']);
 });
-
+*/
 
 
 // ************ 處理共同使用的環境變數 **************
@@ -541,10 +537,13 @@ gulp.task('test-js-watch', function() {
 
 
 // 開發用
-gulp.task('server', ['sass', 'development']);
+gulp.task('server', ['development']);
 
 // 開發用-及時預覽
 gulp.task('live', ['browser-sync', 'server']);
+
+// 只有及時觀看, 沒有其他會動到code的script
+gulp.task('demo', ['browser-sync']);
 
 // 測試
 gulp.task('test', ['live', 'test-html-watch', 'test-js-watch', 'test-watch-reload']);
