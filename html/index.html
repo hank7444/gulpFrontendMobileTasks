@@ -86,23 +86,35 @@
         <link rel="stylesheet" href="../css/main.css">
         <link rel="stylesheet" href="../css/sub.css">
 
+        <!-- 產生測試用css -->
+        <!-- htmlbuild:csstest -->
+        <!-- endbuild -->
+
     </head>
     <body>
-    
-    
-    <!-- htmlbuild:js -->
-    <!-- inject:js -->
 
-    <script src="../js/config/environment.js"></script>
+        <!-- 產生測試用html -->
+        <!-- htmlbuild:htmltest -->
+        <!-- endbuild -->
+        
+        
+        <!-- htmlbuild:js -->
+        <!-- inject:js -->
 
-    <script src="../js/config/environments/development.js"></script>
+        <script src="../js/config/environment.js"></script>
 
-    <!-- endinject -->
-    <!-- endbuild -->
-    
-    <script src="..js/vendor/modernizr-2.7.1.min.js"></script>
-    <script src="..js/vendor/jquery-2.1.0.min.js" type="text/javascript"></script>
-    <script src="..js/main.js" type="text/javascript"></script>
+        <script src="../js/config/environments/development.js"></script>
+
+        <!-- endinject -->
+        <!-- endbuild -->
+        
+        <script src="..js/vendor/modernizr-2.7.1.min.js"></script>
+        <script src="..js/vendor/jquery-2.1.0.min.js" type="text/javascript"></script>
+        <script src="..js/main.js" type="text/javascript"></script>
+
+        <!-- 產生測試用js -->
+        <!-- htmlbuild:jstest -->
+        <!-- endbuild -->
 
     </body>
 </html>

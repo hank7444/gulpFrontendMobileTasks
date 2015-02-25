@@ -315,13 +315,6 @@ var getTestLibAry = {
 };
 
 
-// 要監聽產生的資料夾位置
-var jsTestFolderAry = [
-    filefolder.js.script,
-    filefolder.js.lib
-];
-
-
 // 測試用function
 var getPathName = function(filepath) {
     var name = path.basename(filepath);
@@ -474,6 +467,19 @@ gulp.task('test-html', function() {
         }));
 });
 
+
+// 要監聽產生的資料夾位置
+/*
+不能用以下寫法
+var jsTestFolderAry = [
+    filefolder.js.script,
+    filefolder.js.lib
+];
+
+*/
+var jsTestFolderAry = [].concat(filefolder.js.script).concat(filefolder.js.lib);
+
+
 gulp.task('test-js', function() {
 
     var testType = 'js';
@@ -484,8 +490,6 @@ gulp.task('test-js', function() {
     // 如果資料夾裡面都沒有任何js檔案, watch會失效
     gulp.src(jsTestFolderAry)
         .pipe(watch(jsTestFolderAry, function(files) {
-
-            console.log(1234);
 
             files.pipe(tap(function(file, t) {
 
